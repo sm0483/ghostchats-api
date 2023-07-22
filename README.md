@@ -4,9 +4,9 @@ Chat API is a simple chat application that enables users to send and receive mes
 
 ## Features
 
-- Real-time messaging: Users can send and receive messages instantly using WebSockets.
-- Chat rooms: Users can join different chat rooms to engage in group conversations.
-- Room IDs: Users can retrieve a list of available room IDs to join.
+-  Real-time messaging: Users can send and receive messages instantly using WebSockets.
+-  Chat rooms: Users can join different chat rooms to engage in group conversations.
+-  Room IDs: Users can retrieve a list of available room IDs to join.
 
 ## Getting Started
 
@@ -14,20 +14,15 @@ Follow the steps below to get started with the Chat API:
 
 ### Prerequisites
 
-- Node.js and npm should be installed on your system.
+-  Node.js and npm should be installed on your system.
 
 ### Installation
 
 1. Clone this repository to your local machine:
 
-
-
 2. Navigate to the project directory:
 
-
-
 3. Install the dependencies:
-
 
 ### Usage
 
@@ -35,6 +30,9 @@ Follow the steps below to get started with the Chat API:
 
 To run the application in development mode, use the following command:
 
+```bash
+npm i && npm run start:dev
+```
 
 The application will be available at `http://localhost:{PORT}`.
 
@@ -42,11 +40,9 @@ The application will be available at `http://localhost:{PORT}`.
 
 To build and run the application in production mode, follow these steps:
 
-1. Build the application:
-
-
-2. Start the application:
-
+```bash
+npm i && npm start
+```
 
 The application will be available at `http://localhost:{PORT}`.
 
@@ -54,14 +50,8 @@ The application will be available at `http://localhost:{PORT}`.
 
 To run the application in a Docker container, follow these steps:
 
-1. Build the Docker image:
-
-
-2. Run the Docker container:
-
+```bash
+docker build -t ghost-api . && docker run -p 5000:5000 ghost-api
+```
 
 The application will be accessible at `http://localhost:5000`.
-
-
-
-

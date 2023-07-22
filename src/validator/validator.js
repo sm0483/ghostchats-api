@@ -3,6 +3,7 @@ const Joi = require("joi");
 const schema = Joi.object({
    username: Joi.string().required(),
    message: Joi.string().required(),
+   time: Joi.string().required(),
 });
 
 combineErrorMessages = (errors) => {

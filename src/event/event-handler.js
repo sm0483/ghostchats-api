@@ -3,22 +3,19 @@ const Response = require("../helper/response");
 const constants = require("../constant/constant");
 
 class SocketEventHandler {
+   static usersByRoom = {};
+
    constructor(socket) {
       this.socket = socket;
       this.roomId = socket.handshake.query["room-id"];
       this.username = socket.handshake.query["name"];
-
       this.socket.join(this.roomId);
-      this.socket.to(this.roomId).emit("user_joined", this.username);
-
-      this.handleSendChat = this.handleSendChat.bind(this);
-      this.handleDisconnect = this.handleDisconnect.bind(this);
-
+      this.handleConnect();
       this.socket.on("send_chat", this.handleSendChat);
       this.socket.on("disconnect", this.handleDisconnect);
    }
 
-   handleSendChat(msg) {
+   handleSendChat = (msg) => {
       try {
          const error = validateMessage(msg);
 
@@ -34,11 +31,29 @@ class SocketEventHandler {
          const errorResponse = new Response({}, constants.intError, 500, error);
          return this.socket.emit("error", errorResponse);
       }
-   }
+   };
 
-   handleDisconnect() {
+   handleDisconnect = () => {
+      SocketEventHandler.usersByRoom[this.roomId] =
+         SocketEventHandler.usersByRoom[this.roomId].filter(
+            (user) => user !== this.username
+         );
       this.socket.to(this.roomId).emit("user_left", this.username);
-   }
+   };
+
+   handleConnect = () => {
+      if (!SocketEventHandler.usersByRoom[this.roomId]) {
+         SocketEventHandler.usersByRoom[this.roomId] = [];
+      }
+
+      if (SocketEventHandler.usersByRoom[this.roomId].includes(this.username)) {
+         this.socket.emit("error", "Username already exists");
+         this.socket.disconnect();
+      } else {
+         SocketEventHandler.usersByRoom[this.roomId].push(this.username);
+         this.socket.to(this.roomId).emit("user_joined", this.username);
+      }
+   };
 }
 
 module.exports = SocketEventHandler;
